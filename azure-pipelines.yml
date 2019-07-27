@@ -1,7 +1,31 @@
 jobs:
+
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  timeoutInMinutes: 0
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+  - script: |
+      pip install --upgrade pip
+      pip install conan --upgrade
+      pip install conan_package_tools bincrafters_package_tools
+      set CONAN_VISUAL_VERSIONS="15"
+      cd googletest && python build.py
+    env:
+      CONAN_PASSWORD: $(CONAN_PASSWORD)
+  strategy:
+    matrix:
+      Release:
+        CONAN_BUILD_TYPES: Release
+      Debug:
+        CONAN_BUILD_TYPES: Debug
+
 - job: macOS
   pool:
-    vmImage: 'macOS-10.13'
+    vmImage: 'macOS-10.14'
   timeoutInMinutes: 0
   steps:
   - task: UsePythonVersion@0
@@ -27,3 +51,30 @@ jobs:
       Xcode-8.1:
         CONAN_APPLE_CLANG_VERSIONS: 8.1
         XCODE_VERSION: 8.3.3
+
+- job: Linux
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  timeoutInMinutes: 0
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+  - script: |
+      pip install --upgrade pip
+      pip install conan --upgrade
+      pip install conan_package_tools bincrafters_package_tools
+      cd googletest && python build.py
+    env:
+      CONAN_PASSWORD: $(CONAN_PASSWORD)
+  strategy:
+    matrix:
+      GCC7:
+        CONAN_GCC_VERSIONS: 7
+        CONAN_DOCKER_IMAGE: conanio/gcc7
+      GCC8:
+        CONAN_GCC_VERSIONS: 8
+        CONAN_DOCKER_IMAGE: conanio/gcc8
+      CLANG6.0:
+        CONAN_CLANG_VERSIONS: 6.0
+        CONAN_DOCKER_IMAGE: conanio/clang60
