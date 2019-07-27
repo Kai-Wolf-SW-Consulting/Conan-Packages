@@ -5,9 +5,8 @@
 from bincrafters import build_shared
 
 if __name__ == "__main__":
-    kwargs = {"apple_clang_versions": ["10.0"]}
     recipe = build_shared.get_recipe_path()
-    bbuilder = build_shared.get_builder(build_policy=None, **kwargs)
+    bbuilder = build_shared.get_builder(build_policy=None)
     shared_option_name = None
     if (build_shared.is_shared()):
         shared_option_name = "%s:shared" % build_shared.get_name_from_recipe(recipe=recipe)
