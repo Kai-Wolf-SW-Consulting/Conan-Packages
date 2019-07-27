@@ -4,7 +4,7 @@ jobs:
     vmImage: 'macOS-10.13'
   timeoutInMinutes: 0
   steps:
-  - task: UsePythonVersion@@
+  - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.7'
   - script: |
