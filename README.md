@@ -8,5 +8,5 @@ https://dl.bintray.com/kwc/conan
 # Package availability
 | Package     | Version       |
 | :---------- | ------------- |
-| googletest  | [ ![Download](https://api.bintray.com/packages/kwc/conan/googletest%3Anewproggie/images/download.svg) ](https://bintray.com/kwc/conan/googletest%3Anewproggie/_latestVersion)  |
+| googletest  | [ ![Download](https://api.bintray.com/packages/kwc/conan/googletest%3Akwc/images/download.svg) ](https://bintray.com/kwc/conan/googletest%3Akwc/_latestVersion) |
 
