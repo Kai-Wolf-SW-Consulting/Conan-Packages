@@ -13,7 +13,8 @@ jobs:
       pip install conan --upgrade
       pip install conan_package_tools bincrafters_package_tools
       set CONAN_VISUAL_VERSIONS="15"
-      cd googletest && python build.py
+      pushd googletest && python build.py && popd
+      pushd qt && python build.py && popd
     env:
       CONAN_PASSWORD: $(CONAN_PASSWORD)
   strategy:
@@ -37,7 +38,8 @@ jobs:
       pip install --upgrade pip
       pip install conan --upgrade
       pip install conan_package_tools bincrafters_package_tools
-      cd googletest && python build.py
+      pushd googletest && python build.py && popd
+      pushd qt && python build.py && popd
     env:
       CONAN_PASSWORD: $(CONAN_PASSWORD)
   strategy:
@@ -64,7 +66,8 @@ jobs:
       pip install --upgrade pip
       pip install conan --upgrade
       pip install conan_package_tools bincrafters_package_tools
-      cd googletest && python build.py
+      pushd googletest && python build.py && popd
+      pushd qt && python build.py && popd
     env:
       CONAN_PASSWORD: $(CONAN_PASSWORD)
   strategy:
