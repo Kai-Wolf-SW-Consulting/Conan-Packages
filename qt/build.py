@@ -4,11 +4,14 @@
 
 from bincrafters import build_template_default
 from os import getenv
+from platform import system
 from sys import exit
 
 if __name__ == "__main__":
     # Qt only supports latest and greatest SDKs
-    if (getenv('CONAN_APPLE_CLANG_VERSIONS', '0') != '10.0'): exit(0)
+    if (system() == 'Darwin' && getenv('CONAN_APPLE_CLANG_VERSIONS', '0') != '10.0'):
+        print("macOS with SDK != '10.0' detected. Skipping build")
+        exit(0)
 
     bbuilder = build_template_default.get_builder()
     bbuilder.run()
