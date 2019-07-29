@@ -181,7 +181,7 @@ class QtConan(ConanFile):
 
     def _build_unix(self, args):
         if self.settings.os == "Linux":
-            args += ["-silent", "-xcb"]
+            args += ["-silent", "-qt-xcb"]
             if self.settings.arch == "x86":
                 args += ["-platform linux-g++-32"]
         else:
