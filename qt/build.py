@@ -9,7 +9,7 @@ from sys import exit
 
 if __name__ == "__main__":
     # Qt only supports latest and greatest SDKs
-    if (system() == 'Darwin' && getenv('CONAN_APPLE_CLANG_VERSIONS', '0') != '10.0'):
+    if (system() == 'Darwin' and getenv('CONAN_APPLE_CLANG_VERSIONS', '0') != '10.0'):
         print("macOS with SDK != '10.0' detected. Skipping build")
         exit(0)
 
