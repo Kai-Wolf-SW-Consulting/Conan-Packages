@@ -29,12 +29,13 @@ class QtConan(ConanFile):
         "qttranslations", "qtvirtualkeyboard", "qtwayland", "qtwebchannel", "qtwebengine",
         "qtwebsockets", "qtwebview", "qtwinextras", "qtx11extras", "qtxmlpatterns"
     ]
-    options = dict({
-        "shared": [True, False],
-        "fPIC": [True, False],
-        "opengl": ["no", "es2", "desktop", "dynamic"],
-        "openssl": ["no", "yes", "linked"],
-    }, **{module[2:]: [True, False] for module in submodules})
+    options = dict(
+        {
+            "shared": [True, False],
+            "fPIC": [True, False],
+            "opengl": ["no", "es2", "desktop", "dynamic"],
+            "openssl": ["no", "yes", "linked"],
+        }, **{module[2:]: [True, False] for module in submodules})
     no_copy_source = True
     default_options = ("shared=True", "fPIC=True", "opengl=no", "openssl=no") + tuple(
         module[2:] + "=False" for module in submodules)
@@ -44,11 +45,12 @@ class QtConan(ConanFile):
     def build_requirements(self):
         if tools.os_info.is_linux:
             pack_names = [
-                "libfontconfig1-dev", "libxrender-dev", "libxext-dev", "libxfixes-dev", "libxi-dev",
-                "libgl1-mesa-dev", "libxcb1-dev", "libx11-xcb-dev", "libxcb-keysyms1-dev",
-                "libxcb-image0-dev", "libxcb-shm0-dev", "libx11-dev", "libxcb-icccm4-dev",
-                "libxcb-sync-dev", "libxcb-xfixes0-dev", "libxcb-shape0-dev",
-                "libxcb-render-util0-dev", "libxcb-randr0-dev", "libxcb-glx0-dev"
+                "libfontconfig1-dev", "libfreetype6-dev", "libgl1-mesa-dev", "libx11-dev",
+                "libx11-xcb-dev", "libxcb-glx0-dev", "libxcb-icccm4-dev", "libxcb-image0-dev",
+                "libxcb-keysyms1-dev", "libxcb-randr0-dev", "libxcb-render-util0-dev",
+                "libxcb-shape0-dev", "libxcb-shm0-dev", "libxcb-sync-dev", "libxcb-xfixes0-dev",
+                "libxcb1-dev", "libxext-dev", "libxfixes-dev", "libxi-dev", "libxkbcommon-x11-dev",
+                "libxrender-dev"
             ]
 
             if self.settings.arch == "x86":
@@ -136,8 +138,8 @@ class QtConan(ConanFile):
             libs = self.deps_cpp_info["OpenSSL"].libs
             lib_paths = self.deps_cpp_info["OpenSSL"].lib_paths
             args += [
-                "OPENSSL_LIBS=\"%s %s\"" % (" ".join(["-L" + i for i in lib_paths]), " ".join(
-                    ["-l" + i for i in libs]))
+                "OPENSSL_LIBS=\"%s %s\"" %
+                (" ".join(["-L" + i for i in lib_paths]), " ".join(["-l" + i for i in libs]))
             ]
         if self.settings.os == "Windows":
             if self.settings.compiler == "Visual Studio":
