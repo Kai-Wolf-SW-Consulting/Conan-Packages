@@ -54,30 +54,3 @@ jobs:
         CONAN_APPLE_CLANG_VERSIONS: 8.1
         XCODE_VERSION: 8.3.3
 
-- job: Linux
-  pool:
-    vmImage: 'Ubuntu 16.04'
-  timeoutInMinutes: 0
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.7'
-  - script: |
-      pip install --upgrade pip
-      pip install conan --upgrade
-      pip install conan_package_tools bincrafters_package_tools
-      pushd googletest && python build.py && popd
-      pushd qt && python build.py && popd
-    env:
-      CONAN_PASSWORD: $(CONAN_PASSWORD)
-  strategy:
-    matrix:
-      GCC7:
-        CONAN_GCC_VERSIONS: 7
-        CONAN_DOCKER_IMAGE: conanio/gcc7
-      GCC8:
-        CONAN_GCC_VERSIONS: 8
-        CONAN_DOCKER_IMAGE: conanio/gcc8
-      CLANG6.0:
-        CONAN_CLANG_VERSIONS: 6.0
-        CONAN_DOCKER_IMAGE: conanio/clang60
