@@ -38,7 +38,7 @@ class QtConan(ConanFile):
         }, **{module[2:]: [True, False] for module in submodules})
     no_copy_source = True
     default_options = ("shared=True", "fPIC=True", "opengl=desktop", "openssl=no") + tuple(
-        module[2:] + "=True" if module in ["qt11extras", "qtxmlpatterns"] else module[2:] + "=False"
+        module[2:] + "=True" if module in ["qtxmlpatterns"] else module[2:] + "=False"
         for module in submodules)
     short_paths = True
     build_policy = "missing"
