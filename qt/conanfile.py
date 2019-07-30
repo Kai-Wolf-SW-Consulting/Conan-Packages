@@ -29,6 +29,7 @@ class QtConan(ConanFile):
         "qttranslations", "qtvirtualkeyboard", "qtwayland", "qtwebchannel", "qtwebengine",
         "qtwebsockets", "qtwebview", "qtwinextras", "qtx11extras", "qtxmlpatterns"
     ]
+    included = ["qtxmlpatterns", "qtx11extras"]
     options = dict(
         {
             "shared": [True, False],
@@ -37,8 +38,8 @@ class QtConan(ConanFile):
             "openssl": ["no", "yes", "linked"],
         }, **{module[2:]: [True, False] for module in submodules})
     no_copy_source = True
-    default_options = ("shared=True", "fPIC=True", "opengl=no", "openssl=no") + tuple(
-        module[2:] + "=False" for module in submodules)
+    default_options = ("shared=True", "fPIC=True", "opengl=yes", "openssl=no") + tuple(
+            module[2:] + "=True" if module in included else module[2:] + "=False" for module in submodules)
     short_paths = True
     build_policy = "missing"
 

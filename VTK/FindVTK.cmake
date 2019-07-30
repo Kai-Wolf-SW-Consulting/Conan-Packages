@@ -2,8 +2,7 @@
 # For the licensing terms see LICENSE file in the root directory. For the
 # list of contributors see the AUTHORS file in the same directory.
 
-from bincrafters import build_template_default
+set(VTK_DIR ${CONAN_VTK_ROOT})
+include(${CONAN_VTK_ROOT}/lib/cmake/vtk-8.2/VTKConfig.cmake)
 
-if __name__ == "__main__":
-    bbuilder = build_template_default.get_builder()
-    bbuilder.run()
+mark_as_advanced(VTK_DIR)

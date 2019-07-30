@@ -15,6 +15,7 @@ jobs:
       set CONAN_VISUAL_VERSIONS="15"
       pushd googletest && python build.py && popd
       pushd qt && python build.py && popd
+      pushd VTK && python build.py && popd
     env:
       CONAN_PASSWORD: $(CONAN_PASSWORD)
   strategy:
@@ -40,6 +41,7 @@ jobs:
       pip install conan_package_tools bincrafters_package_tools
       pushd googletest && python build.py && popd
       pushd qt && python build.py && popd
+      pushd VTK && python build.py && popd
     env:
       CONAN_PASSWORD: $(CONAN_PASSWORD)
   strategy:
@@ -47,10 +49,4 @@ jobs:
       Xcode-10.0:
         CONAN_APPLE_CLANG_VERSIONS: 10.0
         XCODE_VERSION: 10
-      Xcode-9.1:
-        CONAN_APPLE_CLANG_VERSIONS: 9.1
-        XCODE_VERSION: 9.4.1
-      Xcode-8.1:
-        CONAN_APPLE_CLANG_VERSIONS: 8.1
-        XCODE_VERSION: 8.3.3
 
