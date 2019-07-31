@@ -22,8 +22,6 @@ jobs:
     matrix:
       Release:
         CONAN_BUILD_TYPES: Release
-      Debug:
-        CONAN_BUILD_TYPES: Debug
 
 - job: macOS
   pool:
