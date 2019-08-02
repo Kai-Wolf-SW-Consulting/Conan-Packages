@@ -3,7 +3,9 @@
 # list of contributors see the AUTHORS file in the same directory.
 
 from conans import ConanFile, CMake, tools
-from os import path, rename
+from fnmatch import fnmatch
+from os import path, rename, walk
+import re
 
 
 class VTKConan(ConanFile):
@@ -15,7 +17,7 @@ class VTKConan(ConanFile):
     author = "Kai Wolf - SW Consulting <mail@kai-wolf.me>"
     license = "MIT"
     topics = ("vtk", "visualization", "toolkit")
-    exports = ["CMakeLists.txt", "FindVTK.cmake"]
+    exports = ["CMakeLists.txt", "FindVTK.cmake", "vtknetcdf_snprintf.diff", "vtktiff_mangle.diff"]
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     source_subfolder = "source_subfolder"
@@ -31,7 +33,7 @@ class VTKConan(ConanFile):
         "ioxml": [True, False],
         "mpi_minimal": [True, False]
     }
-    default_options = ("shared=False", "qt=False", "mpi=False", "fPIC=False", "minimal=False",
+    default_options = ("shared=False", "qt=True", "mpi=False", "fPIC=False", "minimal=False",
                        "ioxml=False", "mpi_minimal=False")
 
     def source(self):
@@ -39,6 +41,8 @@ class VTKConan(ConanFile):
                   "/{0}/{1}-{2}.tar.gz".format(self.short_version, self.name, self.version))
         extracted_dir = self.name + "-" + self.version
         rename(extracted_dir, self.source_subfolder)
+        tools.patch(base_path=self.source_subfolder, patch_file="vtknetcdf_snprintf.diff")
+        tools.patch(base_path=self.source_subfolder, patch_file="vtktiff_mangle.diff")
 
     def requirements(self):
         if self.options.qt:
@@ -105,14 +109,40 @@ class VTKConan(ConanFile):
             self.env['DYLD_LIBRARY_PATH'] = path.join(self.build_folder, 'lib')
             self.output.info("cmake build: %s" % self.build_folder)
 
-        cmake.configure()
+        cmake.configure(build_folder='build')
         if self.settings.os == 'Macos':
             lib_path = path.join(self.build_folder, 'lib')
-            self.run('DYLD_LIBRARY_PATH={0} cmake --build . {1}'.format(
-                lib_path, cmake.build_config))
+            self.run('DYLD_LIBRARY_PATH={0} cmake --build build {1} -j'.format(lib_path, cmake.build_config))
         else:
             cmake.build()
         cmake.install()
+
+    def cmake_fix_macos_sdk_path(self, file_path):
+        # Read in the file
+        with open(file_path, 'r') as file:
+            file_data = file.read()
+
+        if file_data:
+            # Replace the target string
+            file_data = re.sub(
+                # Match sdk path
+                r';/Applications/Xcode\.app/Contents/Developer/Platforms/MacOSX\.platform/Developer/SDKs/MacOSX\d\d\.\d\d\.sdk/usr/include',
+                '',
+                file_data,
+                re.M)
+
+            # Write the file out again
+            with open(file_path, 'w') as file:
+                file.write(file_data)
+
+    def package(self):
+        for fpath, subdirs, names in walk(path.join(self.package_folder, 'lib', 'cmake')):
+            for name in names:
+                if fnmatch(name, '*.cmake'):
+                    cmake_file = path.join(fpath, name)
+                    if tools.os_info.is_macos:
+                        self.cmake_fix_macos_sdk_path(cmake_file)
+
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
