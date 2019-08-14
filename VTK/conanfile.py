@@ -33,7 +33,7 @@ class VTKConan(ConanFile):
         "ioxml": [True, False],
         "mpi_minimal": [True, False]
     }
-    default_options = ("shared=False", "qt=True", "mpi=False", "fPIC=False", "minimal=False",
+    default_options = ("shared=False", "qt=False", "mpi=False", "fPIC=False", "minimal=False",
                        "ioxml=False", "mpi_minimal=False")
 
     def source(self):
