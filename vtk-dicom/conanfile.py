@@ -18,7 +18,7 @@ class VTKDicomConan(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     requires = "VTK/8.2.0@kwc/stable"
     exports_sources = "cmake_config.patch"
-    # default_options = "VTK:qt=False"
+    default_options = "VTK:qt=False"
 
     def source(self):
         zipname = "v{0}.zip".format(self.version)
