@@ -17,7 +17,7 @@ if __name__ == "__main__":
         if item.options["VTK:shared"]: continue # Only static
 
         new_options = copy(item.options)
-        new_options["VTK:qt"] = True
+        new_options["VTK:qt"] = False
         items.append([item.settings, new_options, item.env_vars, item.build_requires])
 
         new_options = copy(item.options)
