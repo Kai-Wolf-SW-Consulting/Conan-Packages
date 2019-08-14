@@ -15,7 +15,7 @@ jobs:
       set CONAN_VISUAL_VERSIONS="15"
       # pushd googletest && python build.py && popd
       # pushd qt && python build.py && popd
-      pushd VTK && python build.py && popd
+      # pushd VTK && python build.py && popd
       pushd vtk-dicom && python build.py && popd
     env:
       CONAN_PASSWORD: $(CONAN_PASSWORD)
