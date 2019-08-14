@@ -1,0 +1,7 @@
+--- source/vtk-dicom-0.8.10/CMake/DICOMConfig.cmake.in	2019-08-14 14:11:34.000000000 +0200
++++ source/vtk-dicom-0.8.10/CMake/DICOMConfig.cmake.in	2019-08-14 14:11:27.000000000 +0200
+@@ -1,3 +1,4 @@
++set(DICOM_PGK_DIR ${CONAN_VTK_DICOM_ROOT}/lib/dicom-0.8/cmake)
+ #-----------------------------------------------------------------------------
+ #
+ # DICOMConfig.cmake - cmake configuration file for external projects.
