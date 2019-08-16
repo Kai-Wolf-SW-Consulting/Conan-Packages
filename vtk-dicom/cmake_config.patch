@@ -5,3 +5,12 @@
  #-----------------------------------------------------------------------------
  #
  # DICOMConfig.cmake - cmake configuration file for external projects.
+@@ -28,7 +29,7 @@
+ set(DICOM_USE_VTKZLIB "@DICOM_USE_VTKZLIB@")
+
+ # Dependencies
+-set(DICOM_VTK_DIR "@VTK_DIR@")
++set(DICOM_VTK_DIR ${CONAN_VTK_ROOT}/lib/cmake/vtk-8.2)
+ if(NOT VTK_FOUND)
+   find_package(VTK PATHS "${DICOM_VTK_DIR}")
+ else()
