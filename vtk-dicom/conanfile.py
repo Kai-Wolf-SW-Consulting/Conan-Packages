@@ -17,12 +17,12 @@ class VTKDicomConan(ConanFile):
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     requires = "VTK/8.2.0@kwc/stable"
-    exports_sources = "cmake_config.patch"
+    exports_sources = "FindDICOM.cmake"
 
     def source(self):
         zipname = "v{0}.zip".format(self.version)
         tools.get(self.homepage + "/archive/" + zipname)
-        tools.patch(patch_file="cmake_config.patch", strip=1)
+        # tools.patch(patch_file="cmake_config.patch", strip=1)
 
     def build(self):
         cmake = CMake(self)
@@ -34,3 +34,6 @@ class VTKDicomConan(ConanFile):
         cmake.configure(source_folder="vtk-dicom-{0}".format(self.version))
         cmake.build()
         cmake.install()
+
+    def package(self):
+        self.copy("FindDICOM.cmake", ".", ".")
