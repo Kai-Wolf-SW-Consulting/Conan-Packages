@@ -26,11 +26,16 @@ if(NOT DICOM_LIBRARIES AND NOT vtkDICOM)
     set(DICOM_LIBRARIES ${DICOM_LIBRARY})
     set(DICOM_INCLUDE_DIRS ${DICOM_INCLUDE_DIR})
 
+    set(_iface_libs "vtkCommonCore;vtkCommonMisc;vtkCommonDataModel;vtkImagingCore;vtkIOCore;vtkIOImage;vtkzlib")
+    if(APPLE)
+      list(APPEND _iface_libs "sqlite3")
+    endif()
+
     add_library(vtkDICOM STATIC IMPORTED)
     set_target_properties(vtkDICOM PROPERTIES
       IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE CXX
       INTERFACE_INCLUDE_DIRECTORIES ${DICOM_INCLUDE_DIRS}
-      IMPORTED_LINK_INTERFACE_LIBRARIES "vtkCommonCore;vtkCommonMisc;vtkCommonDataModel;vtkImagingCore;vtkIOCore;vtkIOImage;vtkzlib;sqlite3"
+      IMPORTED_LINK_INTERFACE_LIBRARIES "${_iface_libs}"
       IMPORTED_LOCATION ${DICOM_LIBRARY})
   else()
     if(DICOM_FIND_REQUIRED)
