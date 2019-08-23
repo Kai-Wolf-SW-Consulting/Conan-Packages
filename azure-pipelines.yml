@@ -33,6 +33,8 @@ jobs:
       versionSpec: '3.7'
   - template: templates/setup-conan.yml
   - script: |
+      brew update
+      brew install conan || brew upgrade conan
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
