@@ -31,10 +31,11 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.7'
-  - template: templates/setup-conan.yml
   - script: |
       brew update
       brew install conan || brew upgrade conan
+  - template: templates/setup-conan.yml
+  - script: |
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
