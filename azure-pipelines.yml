@@ -3,50 +3,42 @@ jobs:
 - job: Windows
   pool:
     vmImage: 'vs2017-win2016'
+  variables:
+    PROFILE: 'profiles/windows_x86_64_visual_studio_15_2017'
   timeoutInMinutes: 0
   steps:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.7'
+  - template: templates/setup-conan.yml
   - script: |
-      pip install --upgrade pip
-      pip install conan --upgrade
-      pip install conan_package_tools bincrafters_package_tools
-      set CONAN_VISUAL_VERSIONS="15"
-      # pushd googletest && python build.py && popd
-      # pushd qt && python build.py && popd
-      pushd VTK && python build.py && popd
-      pushd vtk-dicom && python build.py && popd
-    env:
-      CONAN_PASSWORD: $(CONAN_PASSWORD)
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
   strategy:
     matrix:
       Release:
-        CONAN_BUILD_TYPES: Release
+        BUILD_TYPE: 'Release'
 
 - job: macOS
   pool:
     vmImage: 'macOS-10.13'
+  variables:
+    PROFILE: 'profiles/macos_x86_64_apple_clang_10_0'
   timeoutInMinutes: 0
   steps:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.7'
+  - template: templates/setup-conan.yml
   - script: |
-      sudo xcode-select -switch /Applications/Xcode_${XCODE_VERSION}.app/
-      clang --version
-      pip install --upgrade pip
-      pip install conan --upgrade
-      pip install conan_package_tools bincrafters_package_tools
-      # pushd googletest && python build.py && popd
-      # pushd qt && python build.py && popd
-      pushd VTK && python build.py && popd
-      pushd vtk-dicom && python build.py && popd
-    env:
-      CONAN_PASSWORD: $(CONAN_PASSWORD)
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
   strategy:
     matrix:
-      Xcode-10.0:
-        CONAN_APPLE_CLANG_VERSIONS: 10.0
-        XCODE_VERSION: 10
+      Release:
+          BUILD_TYPE: 'Release'
 
