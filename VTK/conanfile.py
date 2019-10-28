@@ -28,13 +28,14 @@ class VTKConan(ConanFile):
         "shared": [True, False],
         "qt": [True, False],
         "mpi": [True, False],
+        "smp": [True, False],
         "fPIC": [True, False],
         "minimal": [True, False],
         "ioxml": [True, False],
         "mpi_minimal": [True, False]
     }
     default_options = ("shared=False", "qt=True", "mpi=False", "fPIC=False", "minimal=False",
-                       "ioxml=False", "mpi_minimal=False")
+                       "smp=True", "ioxml=False", "mpi_minimal=False")
 
     def source(self):
         tools.get(self.homepage +
@@ -45,6 +46,8 @@ class VTKConan(ConanFile):
         tools.patch(base_path=self.source_subfolder, patch_file="vtktiff_mangle.diff")
 
     def requirements(self):
+        if self.options.smp:
+            self.requires("TBB/2019_U9@conan/stable")
         if self.options.qt:
             self.requires("Qt/5.12.4@kwc/stable")
             self.options["Qt"].shared = True
@@ -95,6 +98,8 @@ class VTKConan(ConanFile):
             cmake.definitions["VTK_Group_Qt"] = "ON"
             cmake.definitions["VTK_QT_VERSION"] = "5"
             cmake.definitions["VTK_BUILD_QT_DESIGNER_PLUGIN"] = "OFF"
+        if self.options.smp:
+            cmake.definitions["VTK_SMP_IMPLEMENTATION_TYPE"] = "TBB"
         if self.options.mpi:
             cmake.definitions["VTK_Group_MPI"] = "ON"
             cmake.definitions["Module_vtkIOParallelXML"] = "ON"
