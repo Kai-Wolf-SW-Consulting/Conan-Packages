@@ -23,9 +23,9 @@ jobs:
 
 - job: macOS
   pool:
-    vmImage: 'macOS-10.13'
+    vmImage: 'macOS-10.14'
   variables:
-    PROFILE: 'profiles/macos_x86_64_apple_clang_10_0'
+    PROFILE: 'profiles/macos_x86_64_apple_clang_11_0'
   timeoutInMinutes: 0
   steps:
   - task: UsePythonVersion@0
