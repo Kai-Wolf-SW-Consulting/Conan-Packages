@@ -46,6 +46,9 @@ class VTKConan(ConanFile):
         tools.patch(base_path=self.source_subfolder, patch_file="vtktiff_mangle.diff")
 
     def requirements(self):
+        if self.options.smp:
+            self.requires("TBB/2019_U9@conan/stable")
+            self.options["TBB"].shared = self.settings.os == "Windows"
         if self.options.qt:
             self.requires("Qt/5.12.4@kwc/stable")
             self.options["Qt"].shared = True
@@ -64,9 +67,6 @@ class VTKConan(ConanFile):
         return ""
 
     def build_requirements(self):
-        if self.options.smp:
-            self.requires("TBB/2019_U9@conan/stable")
-            self.options["TBB"].shared = self.settings.os == "Windows"
         pack_names = None
         if not self.options.minimal and tools.os_info.is_linux:
             if tools.os_info.with_apt:
