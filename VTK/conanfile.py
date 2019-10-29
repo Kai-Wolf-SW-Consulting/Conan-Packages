@@ -101,6 +101,7 @@ class VTKConan(ConanFile):
             cmake.definitions["VTK_BUILD_QT_DESIGNER_PLUGIN"] = "OFF"
         if self.options.smp:
             cmake.definitions["VTK_SMP_IMPLEMENTATION_TYPE"] = "TBB"
+            cmake.definitions["TBB_ROOT"] = self.deps_cpp_info["TBB"].rootpath
         if self.options.mpi:
             cmake.definitions["VTK_Group_MPI"] = "ON"
             cmake.definitions["Module_vtkIOParallelXML"] = "ON"
