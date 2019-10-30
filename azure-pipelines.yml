@@ -22,7 +22,7 @@ jobs:
       conan upload -r kwc --all --confirm VTK
 
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
-      conan upload -r kwc --all --confirm vtk-dicom
+      conan upload -r kwc --all --confirm vtk_dicom
   strategy:
     matrix:
       Release:
@@ -53,7 +53,7 @@ jobs:
       conan upload -r kwc --all --confirm VTK
 
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
-      conan upload -r kwc --all --confirm vtk-dicom
+      conan upload -r kwc --all --confirm vtk_dicom
   strategy:
     matrix:
       Release:
