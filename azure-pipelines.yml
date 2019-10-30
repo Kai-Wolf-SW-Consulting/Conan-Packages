@@ -13,9 +13,16 @@ jobs:
   - template: templates/setup-conan.yml
   - script: |
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
+      conan upload --confirm googletest
+
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
+      conan upload --confirm Qt
+
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
+      conan upload --confirm VTK
+
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
+      conan upload --confirm vtk-dicom
   strategy:
     matrix:
       Release:
@@ -37,9 +44,16 @@ jobs:
   - template: templates/setup-conan.yml
   - script: |
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
+      conan upload --confirm googletest
+
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
+      conan upload --confirm Qt
+
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
+      conan upload --confirm VTK
+
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
+      conan upload --confirm vtk-dicom
   strategy:
     matrix:
       Release:
