@@ -48,7 +48,7 @@ class VTKConan(ConanFile):
     def requirements(self):
         if self.options.smp:
             self.requires("TBB/2019_U9@conan/stable")
-            self.options["TBB"].shared = self.settings.os == "Windows"
+            self.options["TBB"].shared = True
         if self.options.qt:
             self.requires("Qt/5.12.4@kwc/stable")
             self.options["Qt"].shared = True
