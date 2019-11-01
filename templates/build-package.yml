@@ -5,7 +5,7 @@ parameters:
 steps:
   - ${{ each pkg in parameters.packages }}:
     - script: |
-      displayName: ${{ pkg }}
-      failOnStderr: true
         conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) ${{ pkg }} kwc/stable
         conan upload -r kwc --all --confirm ${{ pkg }}
+      displayName: ${{ pkg }}
+      failOnStderr: true
