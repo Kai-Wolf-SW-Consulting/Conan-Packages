@@ -18,6 +18,9 @@ jobs:
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
       conan upload -r kwc --all --confirm Qt
 
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) tbb kwc/stable
+      conan upload -r kwc --all --confirm tbb
+
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
       conan upload -r kwc --all --confirm VTK
 
@@ -48,6 +51,9 @@ jobs:
 
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
       conan upload -r kwc --all --confirm Qt
+
+      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) tbb kwc/stable
+      conan upload -r kwc --all --confirm tbb
 
       conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
       conan upload -r kwc --all --confirm VTK
