@@ -14,8 +14,6 @@ jobs:
   - template: templates/build-package.yml
     parameters:
       packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
-      profile: $(PROFILE)
-      build_type: $(BUILD_TYPE)
   strategy:
     matrix:
       Release:
@@ -38,8 +36,6 @@ jobs:
   - template: templates/build-package.yml
     parameters:
       packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
-      profile: $(PROFILE)
-      build_type: $(BUILD_TYPE)
   strategy:
     matrix:
       Release:
