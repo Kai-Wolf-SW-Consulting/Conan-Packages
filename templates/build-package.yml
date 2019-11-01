@@ -5,7 +5,7 @@ parameters:
   build_type: ''
 
 steps:
-  - ${{ each pkg in parameters.packages }}
+  - ${{ each pkg in parameters.packages }}:
     - script: |
         conan create -pr ${{ parameters.profile }} -r kwc -b outdated -s build_type=${{ parameters.build_type }} ${{ pkg }} kwc/stable
         conan upload -r kwc --all --confirm ${{ pkg }}
