@@ -132,7 +132,7 @@ class VTKConan(ConanFile):
         if file_data:
             # Replace the target string
             file_data = re.sub(
-                self.deps_cpp_info["tbb"].rootpath,
+                repr(self.deps_cpp_info["tbb"].rootpath),
                 r"${CONAN_TBB_ROOT}",
                 file_data,
                 re.M)
@@ -175,7 +175,8 @@ class VTKConan(ConanFile):
         self.cpp_info.includedirs = [
             "include/vtk-%s" % self.short_version,
             "include/vtk-%s/vtknetcdf/include" % self.short_version,
-            "include/vtk-%s/vtknetcdfcpp" % self.short_version
+            "include/vtk-%s/vtknetcdfcpp" % self.short_version,
+            "%s/include" % self.deps_cpp_info["tbb"].rootpath
         ]
 
         if self.settings.os == 'Linux':
