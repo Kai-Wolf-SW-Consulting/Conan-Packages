@@ -9,7 +9,7 @@ from shutil import move
 
 
 class QtConan(ConanFile):
-    name = "Qt"
+    name = "qt"
     version = "5.12.4"
     description = "Qt cross-platform framework for GUIs"
     url = "https://github.com/Kai-Wolf-SW-Consulting/Conan-Packages/qt"

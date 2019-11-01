@@ -9,7 +9,7 @@ import re
 
 
 class VTKConan(ConanFile):
-    name = "VTK"
+    name = "vtk"
     version = "8.2.0"
     description = "Visualization Toolkit by Kitware"
     url = "https://github.com/Kai-Wolf-SW-Consulting/Conan-Packages/VTK"
@@ -50,11 +50,11 @@ class VTKConan(ConanFile):
             self.requires("tbb/2019_U9@kwc/stable")
             self.options["tbb"].shared = True
         if self.options.qt:
-            self.requires("Qt/5.12.4@kwc/stable")
-            self.options["Qt"].shared = True
-            self.options["Qt"].xmlpatterns = True
+            self.requires("qt/5.12.4@kwc/stable")
+            self.options["qt"].shared = True
+            self.options["qt"].xmlpatterns = True
             if tools.os_info.is_linux:
-                self.options["Qt"].x11extras = True
+                self.options["qt"].x11extras = True
 
     def _system_package_architecture(self):
         if tools.os_info.with_apt:

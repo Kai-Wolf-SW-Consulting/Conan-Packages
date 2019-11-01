@@ -16,7 +16,7 @@ class VTKDicomConan(ConanFile):
     topics = ("vtk", "dicom")
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
-    requires = "VTK/8.2.0@kwc/stable"
+    requires = "vtk/8.2.0@kwc/stable"
     exports_sources = "FindDICOM.cmake"
 
     def source(self):
