@@ -133,7 +133,7 @@ class VTKConan(ConanFile):
             # Replace the target string
             file_data = re.sub(
                 self.deps_cpp_info["tbb"].rootpath,
-                "${CONAN_TBB_ROOT}",
+                r"${CONAN_TBB_ROOT}",
                 file_data,
                 re.M)
 
