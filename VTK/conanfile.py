@@ -124,6 +124,23 @@ class VTKConan(ConanFile):
             cmake.build()
         cmake.install()
 
+    def cmake_fix_tbb_dependency_path(self, file_path):
+        # Read in the file
+        with open(file_path, 'r') as file:
+            file_data = file.read()
+
+        if file_data:
+            # Replace the target string
+            file_data = re.sub(
+                self.deps_cpp_info["tbb"].rootpath,
+                "${CONAN_TBB_ROOT}",
+                file_data,
+                re.M)
+
+            # Write the file out again
+            with open(file_path, 'w') as file:
+                file.write(file_data)
+
     def cmake_fix_macos_sdk_path(self, file_path):
         # Read in the file
         with open(file_path, 'r') as file:
@@ -147,6 +164,7 @@ class VTKConan(ConanFile):
             for name in names:
                 if fnmatch(name, '*.cmake'):
                     cmake_file = path.join(fpath, name)
+                    self.cmake_fix_tbb_dependency_path(cmake_file)
                     if tools.os_info.is_macos:
                         self.cmake_fix_macos_sdk_path(cmake_file)
 
