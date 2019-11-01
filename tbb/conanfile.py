@@ -19,7 +19,7 @@ class TBBConan(ConanFile):
     topics = ("tbb", "threading", "parallelism", "tbbmalloc")
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "tbbmalloc": [True, False], "tbbproxy": [True, False]}
-    default_options = {"shared": False, "tbbmalloc": False, "tbbproxy": False}
+    default_options = {"shared": True, "tbbmalloc": False, "tbbproxy": False}
     _source_subfolder = "source_subfolder"
 
     def configure(self):
