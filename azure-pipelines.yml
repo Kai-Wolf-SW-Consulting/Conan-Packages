@@ -1,3 +1,5 @@
+parameters:
+  packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
 jobs:
 
 - job: Windows
@@ -11,21 +13,10 @@ jobs:
     inputs:
       versionSpec: '3.7'
   - template: templates/setup-conan.yml
-  - script: |
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
-      conan upload -r kwc --all --confirm googletest
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
-      conan upload -r kwc --all --confirm Qt
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) tbb kwc/stable
-      conan upload -r kwc --all --confirm tbb
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
-      conan upload -r kwc --all --confirm VTK
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
-      conan upload -r kwc --all --confirm vtk_dicom
+  - ${{ each pkg in parameters.packages }}:
+    - script: |
+        conan create -pr $(PROFILE) -r kwc -b outdated -s build_Type=$(BUILD_TYPE) ${{ pkg }}
+        conan upload -r kwc --all --confirm ${{ pkg }}
   strategy:
     matrix:
       Release:
@@ -45,21 +36,10 @@ jobs:
       brew update
       brew install conan || brew upgrade conan
   - template: templates/setup-conan.yml
-  - script: |
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) googletest kwc/stable
-      conan upload -r kwc --all --confirm googletest
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) qt kwc/stable
-      conan upload -r kwc --all --confirm Qt
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) tbb kwc/stable
-      conan upload -r kwc --all --confirm tbb
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) VTK kwc/stable
-      conan upload -r kwc --all --confirm VTK
-
-      conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) vtk-dicom kwc/stable
-      conan upload -r kwc --all --confirm vtk_dicom
+  - ${{ each pkg in parameters.packages }}:
+    - script: |
+        conan create -pr $(PROFILE) -r kwc -b outdated -s build_Type=$(BUILD_TYPE) ${{ pkg }}
+        conan upload -r kwc --all --confirm ${{ pkg }}
   strategy:
     matrix:
       Release:
