@@ -39,8 +39,8 @@ class VTKConan(ConanFile):
 
     def source(self):
         tools.get(self.homepage +
-                  "/{0}/{1}-{2}.tar.gz".format(self.short_version, self.name, self.version))
-        extracted_dir = self.name + "-" + self.version
+                  "/{0}/{1}-{2}.tar.gz".format(self.short_version, "VTK", self.version))
+        extracted_dir = "VTK-" + self.version
         rename(extracted_dir, self.source_subfolder)
         tools.patch(base_path=self.source_subfolder, patch_file="vtknetcdf_snprintf.diff")
         tools.patch(base_path=self.source_subfolder, patch_file="vtktiff_mangle.diff")
