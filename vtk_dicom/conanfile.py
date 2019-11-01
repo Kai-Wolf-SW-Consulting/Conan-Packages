@@ -29,7 +29,7 @@ class VTKDicomConan(ConanFile):
         cmake.definitions["BUILD_EXAMPLES"] = "OFF"
         cmake.definitions["BUILD_PROGRAMS"] = "OFF"
         cmake.definitions["BUILD_TESTING"] = "OFF"
-        vtk_root = self.deps_cpp_info["VTK"].rootpath.replace(sep, '/')
+        vtk_root = self.deps_cpp_info["vtk"].rootpath.replace(sep, '/')
         cmake.definitions["CMAKE_PREFIX_PATH"] = vtk_root
         cmake.configure(source_folder="vtk-dicom-{0}".format(self.version))
         cmake.build()
