@@ -1,9 +1,9 @@
 # Common Conan package build steps template
 parameters:
-  param: []
+  packages: []
 
 steps:
-  - ${{ each p in parameters.param }}
+  - ${{ each pkg in parameters.packages }}
     - script:
-        conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) ${{ p }} kwc/stable
-        conan upload -r kwc --all --confirm ${{ p }}
+        conan create -pr $(PROFILE) -r kwc -b outdated -s build_type=$(BUILD_TYPE) ${{ pkg }} kwc/stable
+        conan upload -r kwc --all --confirm ${{ pkg }}

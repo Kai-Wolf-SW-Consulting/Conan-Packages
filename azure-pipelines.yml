@@ -12,7 +12,8 @@ jobs:
       versionSpec: '3.7'
   - template: templates/setup-conan.yml
   - template: templates/build-package.yml
-    parameters: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
+    parameters:
+      packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
   strategy:
     matrix:
       Release:
