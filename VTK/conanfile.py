@@ -47,8 +47,8 @@ class VTKConan(ConanFile):
 
     def requirements(self):
         if self.options.smp:
-            self.requires("TBB/2019_U9@conan/stable")
-            self.options["TBB"].shared = True
+            self.requires("tbb/2019_U9@kwc/stable")
+            self.options["tbb"].shared = True
         if self.options.qt:
             self.requires("Qt/5.12.4@kwc/stable")
             self.options["Qt"].shared = True
@@ -101,7 +101,7 @@ class VTKConan(ConanFile):
             cmake.definitions["VTK_BUILD_QT_DESIGNER_PLUGIN"] = "OFF"
         if self.options.smp:
             cmake.definitions["VTK_SMP_IMPLEMENTATION_TYPE"] = "TBB"
-            cmake.definitions["TBB_ROOT"] = self.deps_cpp_info["TBB"].rootpath
+            cmake.definitions["TBB_ROOT"] = self.deps_cpp_info["tbb"].rootpath
         if self.options.mpi:
             cmake.definitions["VTK_Group_MPI"] = "ON"
             cmake.definitions["Module_vtkIOParallelXML"] = "ON"
