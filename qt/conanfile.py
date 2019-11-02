@@ -198,6 +198,9 @@ class QtConan(ConanFile):
             self.run("make")
             self.run("make install")
 
+    def package(self):
+        self.output.info("No package step needed")
+
     def package_info(self):
         if self.settings.os == "Windows":
             self.env_info.path.append(path.join(self.package_folder, "bin"))
