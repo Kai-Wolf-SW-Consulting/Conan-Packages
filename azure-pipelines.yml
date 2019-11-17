@@ -30,6 +30,7 @@ jobs:
     inputs:
       versionSpec: '3.7'
   - template: templates/setup-conan.yml
+  - script: source ~/.profile
   - template: templates/build-package.yml
     parameters:
       packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
