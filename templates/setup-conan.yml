@@ -1,11 +1,8 @@
 # Common conan setup steps
 steps:
   - script: |
-      pip install --upgrade pip --user
-      pip install --upgrade conan --user
-      pip install --upgrade conan_package_tools --user
       conan config set general.revisions_enabled=True
       conan remote add kwc http://conan.kai-wolf.me:8081/artifactory/api/conan/conan
       conan user -p $(CONAN_PASSWORD) -r kwc kai
-    displayName: "Install Conan"
+    displayName: "Setup Conan"
     failOnStderr: false

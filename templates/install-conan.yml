@@ -1,0 +1,8 @@
+# Common conan setup steps
+steps:
+  - script: |
+      pip install --upgrade pip --user
+      pip install --upgrade conan --user
+      pip install --upgrade conan_package_tools --user
+    displayName: "Install Conan"
+    failOnStderr: true

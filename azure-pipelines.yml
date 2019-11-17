@@ -10,6 +10,7 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.7'
+  - template: templates/install-conan.yml
   - template: templates/setup-conan.yml
   - template: templates/build-package.yml
     parameters:
@@ -29,8 +30,9 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.7'
-  - template: templates/setup-conan.yml
+  - template: templates/install-conan.yml
   - script: source ~/.profile
+  - template: templates/setup-conan.yml
   - template: templates/build-package.yml
     parameters:
       packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
@@ -52,6 +54,7 @@ jobs:
   - script: |
       brew update
       brew install conan || brew upgrade conan
+  - template: templates/install-conan.yml
   - template: templates/setup-conan.yml
   - template: templates/build-package.yml
     parameters:
