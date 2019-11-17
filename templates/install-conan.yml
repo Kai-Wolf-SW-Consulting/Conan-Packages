@@ -5,4 +5,4 @@ steps:
       pip install --upgrade conan --user
       pip install --upgrade conan_package_tools --user
     displayName: "Install Conan"
-    failOnStderr: true
+    failOnStderr: false
