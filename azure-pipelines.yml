@@ -19,6 +19,25 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-18.04'
+  variables:
+    PROFILE: 'profiles/ubuntu_x86_64_gcc_7'
+  timeoutInMinutes: 0
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+  - template: templates/setup-conan.yml
+  - template: templates/build-package.yml
+    parameters:
+      packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
+  strategy:
+    matrix:
+      Release:
+        BUILD_TYPE: 'Release'
+
 - job: macOS
   pool:
     vmImage: 'macOS-10.14'

@@ -7,3 +7,5 @@ steps:
       conan config set general.revisions_enabled=True
       conan remote add kwc http://conan.kai-wolf.me:8081/artifactory/api/conan/conan
       conan user -p $(CONAN_PASSWORD) -r kwc kai
+    displayName: "Install Conan"
+    failOnStderr: true
