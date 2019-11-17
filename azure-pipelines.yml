@@ -31,7 +31,7 @@ jobs:
     inputs:
       versionSpec: '3.7'
   - template: templates/install-conan.yml
-  - script: source ~/.profile
+  - script: echo "##vso[task.setvariable variable=PATH]${PATH}:~/.local/bin/"
   - template: templates/setup-conan.yml
   - template: templates/build-package.yml
     parameters:
