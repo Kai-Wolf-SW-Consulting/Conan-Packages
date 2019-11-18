@@ -119,7 +119,8 @@ class VTKConan(ConanFile):
         cmake.configure(build_folder='build')
         if self.settings.os == 'Macos':
             lib_path = path.join(self.build_folder, 'lib')
-            self.run('DYLD_LIBRARY_PATH={0} cmake --build build {1} -j'.format(lib_path, cmake.build_config))
+            self.run('DYLD_LIBRARY_PATH={0} cmake --build build {1} -j'.format(
+                lib_path, cmake.build_config))
         else:
             cmake.build()
         cmake.install()
@@ -132,10 +133,7 @@ class VTKConan(ConanFile):
         if file_data:
             # Replace the target string
             file_data = re.sub(
-                repr(self.deps_cpp_info["tbb"].rootpath),
-                r"${CONAN_TBB_ROOT}",
-                file_data,
-                re.M)
+                repr(self.deps_cpp_info["tbb"].rootpath), r"${CONAN_TBB_ROOT}", file_data, re.M)
 
             # Write the file out again
             with open(file_path, 'w') as file:
@@ -167,7 +165,6 @@ class VTKConan(ConanFile):
                     self.cmake_fix_tbb_dependency_path(cmake_file)
                     if tools.os_info.is_macos:
                         self.cmake_fix_macos_sdk_path(cmake_file)
-
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
