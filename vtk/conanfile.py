@@ -52,9 +52,9 @@ class VTKConan(ConanFile):
         if self.options.qt:
             self.requires("qt/5.12.4@kwc/stable")
             self.options["qt"].shared = True
-            self.options["qt"].qtxmlpatterns = True
+            self.options["qt"].xmlpatterns = True
             if tools.os_info.is_linux:
-                self.options["qt"].qtx11extras = True
+                self.options["qt"].x11extras = True
 
     def _system_package_architecture(self):
         if tools.os_info.with_apt:
