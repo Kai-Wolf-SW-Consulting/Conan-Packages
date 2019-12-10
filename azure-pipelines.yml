@@ -40,7 +40,7 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
-- job: Ubuntu_Linux_18.04
+- job: Ubuntu_Linux_18_04
   pool:
     vmImage: 'ubuntu-18.04'
   variables:
@@ -61,7 +61,7 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
-- job: macOS_10.14
+- job: macOS_10_14
   pool:
     vmImage: 'macOS-10.14'
   variables:
