@@ -1,6 +1,6 @@
 jobs:
 
-- job: Windows VS2017
+- job: Windows_VS2017
   pool:
     vmImage: 'vs2017-win2016'
   variables:
@@ -20,7 +20,7 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
-- job: Windows VS2019
+- job: Windows_VS2019
   pool:
     vmImage: 'windows-2019'
   variables:
@@ -40,7 +40,7 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
-- job: Ubuntu Linux 18.04
+- job: Ubuntu_Linux_18.04
   pool:
     vmImage: 'ubuntu-18.04'
   variables:
@@ -61,7 +61,7 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
-- job: macOS 10.14
+- job: macOS_10.14
   pool:
     vmImage: 'macOS-10.14'
   variables:
