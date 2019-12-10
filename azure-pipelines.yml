@@ -1,6 +1,6 @@
 jobs:
 
-- job: Windows
+- job: Windows VS2017
   pool:
     vmImage: 'vs2017-win2016'
   variables:
@@ -20,7 +20,27 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
-- job: Linux
+- job: Windows VS2019
+  pool:
+    vmImage: 'windows-2019'
+  variables:
+    PROFILE: 'profiles/windows_x86_64_visual_studio_17_2019'
+  timeoutInMinutes: 0
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+  - template: templates/install-conan.yml
+  - template: templates/setup-conan.yml
+  - template: templates/build-package.yml
+    parameters:
+      packages: ["googletest", "qt", "tbb", "vtk", "vtk_dicom"]
+  strategy:
+    matrix:
+      Release:
+        BUILD_TYPE: 'Release'
+
+- job: Ubuntu Linux 18.04
   pool:
     vmImage: 'ubuntu-18.04'
   variables:
@@ -41,7 +61,7 @@ jobs:
       Release:
         BUILD_TYPE: 'Release'
 
-- job: macOS
+- job: macOS 10.14
   pool:
     vmImage: 'macOS-10.14'
   variables:
