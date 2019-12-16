@@ -132,8 +132,8 @@ class VTKConan(ConanFile):
 
         if file_data:
             # Replace the target string
-            file_data = re.sub(
-                self.deps_cpp_info["tbb"].rootpath, r"\${CONAN_TBB_ROOT}", file_data, re.M)
+            tbb_root = self.deps_cpp_info["tbb"].rootpath.replace('\\', '/')
+            file_data = re.sub(tbb_root, r"\${CONAN_TBB_ROOT}", file_data, re.M)
 
             # Write the file out again
             with open(file_path, 'w') as file:
@@ -158,10 +158,13 @@ class VTKConan(ConanFile):
                 file.write(file_data)
 
     def package(self):
-        for fpath, subdirs, names in walk(path.join(self.build_folder, 'package', 'lib', 'cmake')):
+        lib_cmake_path = path.join(self.package_folder, 'lib', 'cmake')
+        self.output.info("Searching for *.cmake in %s" % lib_cmake_path)
+        for fpath, subdirs, names in walk(lib_cmake_path):
             for name in names:
                 if fnmatch(name, '*.cmake'):
                     cmake_file = path.join(fpath, name)
+                    self.output.info("Patching %s" % cmake_file)
                     self.cmake_fix_tbb_dependency_path(cmake_file)
                     if tools.os_info.is_macos:
                         self.cmake_fix_macos_sdk_path(cmake_file)
