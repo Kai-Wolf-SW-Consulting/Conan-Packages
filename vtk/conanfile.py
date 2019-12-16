@@ -133,7 +133,7 @@ class VTKConan(ConanFile):
         if file_data:
             # Replace the target string
             tbb_root = self.deps_cpp_info["tbb"].rootpath.replace('\\', '/')
-            file_data = re.sub(tbb_root, r"\${CONAN_TBB_ROOT}", file_data, re.M)
+            file_data = re.sub(tbb_root, r"${CONAN_TBB_ROOT}", file_data, re.M)
 
             # Write the file out again
             with open(file_path, 'w') as file:
