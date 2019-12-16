@@ -133,7 +133,7 @@ class VTKConan(ConanFile):
         if file_data:
             # Replace the target string
             file_data = re.sub(
-                repr(self.deps_cpp_info["tbb"].rootpath), r"${CONAN_TBB_ROOT}", file_data, re.M)
+                self.deps_cpp_info["tbb"].rootpath, r"\${CONAN_TBB_ROOT}", file_data, re.M)
 
             # Write the file out again
             with open(file_path, 'w') as file:
@@ -158,7 +158,7 @@ class VTKConan(ConanFile):
                 file.write(file_data)
 
     def package(self):
-        for fpath, subdirs, names in walk(path.join(self.package_folder, 'lib', 'cmake')):
+        for fpath, subdirs, names in walk(path.join(self.build_folder, 'package', 'lib', 'cmake')):
             for name in names:
                 if fnmatch(name, '*.cmake'):
                     cmake_file = path.join(fpath, name)
