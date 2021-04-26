@@ -10,14 +10,13 @@ import re
 
 class VTKConan(ConanFile):
     name = "vtk"
-    version = "8.2.0"
+    version = "9.0.1_master"
     description = "Visualization Toolkit by Kitware"
     url = "https://github.com/Kai-Wolf-SW-Consulting/Conan-Packages/VTK"
     homepage = "http://www.vtk.org/files/release"
     author = "Kai Wolf - SW Consulting <mail@kai-wolf.me>"
     license = "MIT"
     topics = ("vtk", "visualization", "toolkit")
-    exports = ["CMakeLists.txt", "FindVTK.cmake", "vtknetcdf_snprintf.diff", "vtktiff_mangle.diff"]
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     source_subfolder = "source_subfolder"
@@ -38,12 +37,8 @@ class VTKConan(ConanFile):
                        "smp=True", "ioxml=False", "mpi_minimal=False")
 
     def source(self):
-        tools.get(self.homepage +
-                  "/{0}/{1}-{2}.tar.gz".format(self.short_version, "VTK", self.version))
-        extracted_dir = "VTK-" + self.version
-        rename(extracted_dir, self.source_subfolder)
-        tools.patch(base_path=self.source_subfolder, patch_file="vtknetcdf_snprintf.diff")
-        tools.patch(base_path=self.source_subfolder, patch_file="vtktiff_mangle.diff")
+        tools.get("https://gitlab.kitware.com/vtk/vtk/-/archive/master/vtk-master.zip")
+        rename("vtk-master", self.source_subfolder)
 
     def requirements(self):
         if self.options.smp:
@@ -85,11 +80,31 @@ class VTKConan(ConanFile):
         if self.settings.compiler == "Visual Studio":
             del self.options.fPIC
 
-    def build(self):
+    def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_TESTING"] = "OFF"
         cmake.definitions["BUILD_EXAMPLES"] = "OFF"
         cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_ChartsCore"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_CommonColor"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_CommonCore"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_FiltersParallelImaging"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_FiltersSMP"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_FiltersSources"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_IOGeometry"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_IOImage"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_IOOggTheora"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_ImagingStatistics"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_InteractionImage"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_InteractionStyle"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_RenderingCore"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_RenderingFreeType"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_RenderingGL2PSOpenGL2"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_RenderingOpenGL2"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_RenderingVolumeOpenGL2"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_ViewsContext2D"] = "YES"
+        cmake.definitions["VTK_MODULE_ENABLE_VTK_ViewsQt"] = "YES"
         if self.options.minimal:
             cmake.definitions["VTK_Group_StandAlone"] = "OFF"
             cmake.definitions["VTK_Group_Rendering"] = "OFF"
@@ -97,6 +112,7 @@ class VTKConan(ConanFile):
             cmake.definitions["Module_vtkIOXML"] = "ON"
         if self.options.qt:
             cmake.definitions["VTK_Group_Qt"] = "ON"
+            cmake.definitions["VTK_MODULE_ENABLE_VTK_GUISupportQt"] = "YES"
             cmake.definitions["VTK_QT_VERSION"] = "5"
             cmake.definitions["VTK_BUILD_QT_DESIGNER_PLUGIN"] = "OFF"
         if self.options.smp:
@@ -108,22 +124,23 @@ class VTKConan(ConanFile):
         if self.options.mpi_minimal:
             cmake.definitions["Module_vtkIOParallelXML"] = "ON"
             cmake.definitions["Module_vtkParallelMPI"] = "ON"
-
         if self.settings.build_type == "Debug" and self.settings.compiler == "Visual Studio":
             cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "_d"
-
         if self.settings.os == 'Macos':
             self.env['DYLD_LIBRARY_PATH'] = path.join(self.build_folder, 'lib')
             self.output.info("cmake build: %s" % self.build_folder)
 
         cmake.configure(build_folder='build')
+        return cmake
+
+    def build(self):
+        cmake = self._configure_cmake()
         if self.settings.os == 'Macos':
             lib_path = path.join(self.build_folder, 'lib')
             self.run('DYLD_LIBRARY_PATH={0} cmake --build build {1} -j'.format(
                 lib_path, cmake.build_config))
         else:
             cmake.build()
-        cmake.install()
 
     def cmake_fix_tbb_dependency_path(self, file_path):
         # Read in the file
@@ -158,6 +175,7 @@ class VTKConan(ConanFile):
                 file.write(file_data)
 
     def package(self):
+        cmake = self._configure_cmake()
         lib_cmake_path = path.join(self.package_folder, 'lib', 'cmake')
         self.output.info("Searching for *.cmake in %s" % lib_cmake_path)
         for fpath, subdirs, names in walk(lib_cmake_path):
@@ -168,14 +186,12 @@ class VTKConan(ConanFile):
                     self.cmake_fix_tbb_dependency_path(cmake_file)
                     if tools.os_info.is_macos:
                         self.cmake_fix_macos_sdk_path(cmake_file)
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
-
         self.cpp_info.includedirs = [
             "include/vtk-%s" % self.short_version,
-            "include/vtk-%s/vtknetcdf/include" % self.short_version,
-            "include/vtk-%s/vtknetcdfcpp" % self.short_version,
             "%s/include" % self.deps_cpp_info["tbb"].rootpath
         ]
 
